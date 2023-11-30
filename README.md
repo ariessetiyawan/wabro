@@ -29,15 +29,15 @@ Untuk menjalankan dengan executable, download aplikasi ini di bagian Release di 
 ![baris dan kolom pertama](client/assets/ss2.png)
 
 4. Buat template, bungkus judul kolom dengan simbol **{}**, contoh template (sesuai data diatas):
->Pelanggan Yth,
+>Calon Pengantin YTH,
 
->Bersama ini kami informasikan tagihan Wabill Anda {nomor} atas nama {nama}, bln tagihan 08-2021 sebesar {tagihan} akan jatuh tempo pada tanggal 05-09-2021.
+>Dengan ini kami konfirmasi jadwal nikah antara saudara *{nama suami}* dengan *{nama istri}* yang akan di laksanakan pada *{tgl akad} {pukul}* bertempat di *{lokasi akad}*.
 
->Mohon segera lakukan pembayaran agar Wabill Anda tdk terisolir.
+>Petugas yang hadir dari KUA adalah saudara/bpk. *{nama penghulu}*
 
->Abaikan notifikasi ini jika sudah melakukan pembayaran.
+>Dimohon kesiapannya 10 menit sebelum acara ijab beralangsung.
 
->Terima kasih
+>*wassallam*,
 5. Cek preview terlebih dahulu
 6. Kirim!
 
