@@ -1,7 +1,9 @@
 # Wabro
 Pertama kali dibuat oleh afarhansib (https://github.com/afarhansib) dengan library bailey, kali ini saya coba menggunakan whatsapp-web.js
 Kirim pesan WhatsApp unik ke banyak nomor sekaligus.
-Pastikan di PC anda sudah terinstall nodejs (https://github.com/MicrosoftDocs/windows-dev-docs/blob/docs/hub/dev-environment/javascript/nodejs-on-windows.md)
+
+Pastikan di PC anda sudah terinstall nodejs (https://github.com/MicrosoftDocs/windows-dev-docs/blob/docs/hub/dev-environment/javascript/nodejs-on-windows.md).
+
 Klik [link ini](https://youtu.be/ujEuCkUO97U) untuk melihat video panduan instalasi dan penggunaan.
 
 ![screenshot app](client/assets/ss-app.png)
