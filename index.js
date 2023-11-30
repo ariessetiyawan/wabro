@@ -23,16 +23,22 @@ const upload = multer({dest:'./upload/'});
 const SESSION_FILE_PATH = './wtf-session.json';
 let sessionCfg;
 let LoginWA=false
+const myCustomId = 'wabro'
+
 if (fs.existsSync(SESSION_FILE_PATH)) {
   sessionCfg = require(SESSION_FILE_PATH);
-}
-;
+};
+
 var today  = new Date();
 var now = today.toLocaleString();
-var strag=new LocalAuth({ clientId: "client-one" })
+
+const authStrategy =new LocalAuth({ clientId: myCustomId })
+//const authStrategy =new LegacySessionAuth({session: sessionCfg})
 const client = new Client({
-	authStrategy: strag,
+	authStrategy: authStrategy,
 	restartOnAuthFail: true,
+	takeoverOnConflict: true,
+	takeoverTimeoutMs: 10,
 	puppeteer: {
 		headless: true,
 		args: [
@@ -46,6 +52,7 @@ const client = new Client({
 		  '--disable-gpu'
 		],
 	  },
+	
 });
  
 app.use(express.json())
@@ -67,15 +74,14 @@ app.get("/client", (req, res) => {
 })
 
 // initialize whatsapp and the example event
-client.on('message', msg => {
-  if (msg.body == '!ping') {
-    msg.reply('pong');
-  } else if (msg.body == 'skuy') {
-    msg.reply('helo ma bradah');
-  }
-});
-
-client.initialize();
+client.initialize()
+   .then(async () => {
+      const version = await client.getWWebVersion()
+      console.log(`WHATSAPP WEB version: v${version}`)
+   })
+   .catch((err) => {
+      console.error(err)   
+   })
 
 io.on('connection', (socket) => {
   //console.log(socket)
@@ -89,12 +95,14 @@ io.on('connection', (socket) => {
   });
 
   client.on('ready', () => {	
+    console.log('ready client')
     socket.emit('message', `${now} WhatsApp is ready!`);
   });
 	
   client.on('authenticated', (session) => {
 	//console.log(client)
 	LoginWA=true
+	console.log('Server WA',LoginWA)
 	var usrwa=''
 	socket.emit('authenticated', `${now}=> ${usrwa}, authenticated`);
 	if (!session==undefined){
@@ -108,13 +116,13 @@ io.on('connection', (socket) => {
   });
 
   client.on('auth_failure', function(session) {
+	LoginWA=false
     socket.emit('message', `${now} Auth failure, restarting...`);
   });
   client.on('connected', function(dt) {
     console.log('connected',dt)
   });
  
-  
   client.on('message_create', (msg) => {
 		// Fired on all message creations, including your own
 		if (msg.fromMe) {
@@ -153,19 +161,19 @@ io.on('connection', (socket) => {
 
 	client.on('group_join', (notification) => {
 		// User has joined or been added to the group.
-		console.log('join', notification);
-		notification.reply('User joined.');
+		//console.log('join', notification);
+		//notification.reply('User joined.');
 	});
 
 	client.on('group_leave', (notification) => {
 		// User has left or been kicked from the group.
-		console.log('leave', notification);
-		notification.reply('User left.');
+		//console.log('leave', notification);
+		//notification.reply('User left.');
 	});
 
 	client.on('group_update', (notification) => {
 		// Group picture, subject or description has been updated.
-		console.log('update', notification);
+		//console.log('update', notification);
 	});
 
 	client.on('change_state', state => {
@@ -173,7 +181,10 @@ io.on('connection', (socket) => {
 	});
 
 	client.on('disconnected', (reason) => {
-		console.log('Client was logged out', reason);
+		LoginWA=false
+		try{
+			console.log('Client was logged out', reason);
+		} catch(e){}
 	});
   
 });
@@ -184,7 +195,8 @@ app.post('/send-message', async (req, res) => {
 	  var mobile_no = number;
 	  var sanitized_number = mobile_no.replace(/[^\d]/g, ''); // remove except number
 	  var phone=''
-	  if (client.info.pushname){
+	  //LoginWA=true
+	  if (LoginWA){
 			if (sanitized_number.startsWith('0')) {
 				sanitized_number = '62' + sanitized_number.substr(1);
 			}
