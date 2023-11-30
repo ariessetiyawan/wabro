@@ -1,7 +1,7 @@
 {
-  "name": "wabill",
-  "version": "1.1.0",
-  "description": "WhatsApp API using baileys",
+  "name": "wabro",
+  "version": "1.0.0",
+  "description": "WhatsApp API using whatsapp-web.js",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -11,9 +11,8 @@
     "WhatsApp"
   ],
   "author": {
-    "name": "Ahmad Farhan Sibghotalloh",
-    "email": "afarhansib@gmail.com",
-    "url": "https://afarhansib.github.io"
+    "name": "aries setiyawan",
+    "email": "aries.setiyawan@gmail.com"
   },
   "license": "ISC",
   "dependencies": {
